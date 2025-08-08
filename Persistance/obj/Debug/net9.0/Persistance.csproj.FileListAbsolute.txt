@@ -13,3 +13,4 @@ C:\Users\NaraayaniArchunan\Documents\WebAPIDotNet\ReActivities\Persistance\obj\D
 C:\Users\NaraayaniArchunan\Documents\WebAPIDotNet\ReActivities\Persistance\obj\Debug\net9.0\refint\Persistance.dll
 C:\Users\NaraayaniArchunan\Documents\WebAPIDotNet\ReActivities\Persistance\obj\Debug\net9.0\Persistance.pdb
 C:\Users\NaraayaniArchunan\Documents\WebAPIDotNet\ReActivities\Persistance\obj\Debug\net9.0\ref\Persistance.dll
+C:\Users\NaraayaniArchunan\Documents\WebAPIDotNet\ReActivities\Persistance\obj\Debug\net9.0\Persistance.sourcelink.json
