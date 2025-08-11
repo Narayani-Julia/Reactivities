@@ -144,3 +144,5 @@ Step1: Go to Nuget and download: MediiatR @Jimmy Bogard to our APPLICATION proje
 - Used to create handlers in our project
 
 -Hot reload can let ya down so CTRL+R that API dotnet server
+
+- using Automapper version 13 because it uses the same config and same commercial license as the course
