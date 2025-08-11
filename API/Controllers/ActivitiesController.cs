@@ -19,7 +19,6 @@ public class ActivitiesController() : BaseApiController
     [HttpGet]
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
-        //Without Mediator: return await context.Activities.ToListAsync();
         return await Mediator.Send(new GetActivityList.Query());
     }
 
@@ -27,12 +26,13 @@ public class ActivitiesController() : BaseApiController
     [HttpGet("{id}")]
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
     {
-        //Without Mediator:
-        // var activity = await context.Activities.FindAsync(id);
-        // if (activity == null) return BadRequest(); //can also return notFound();
-        // return activity;
-        //With Mediator:
         return await Mediator.Send(new GetActivityDetails.Query { Id = id });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<string>> CreateActivity(Activity activity)
+    {
+        return await Mediator.Send(new CreateActivity.Command { Activity = activity });
     }
 }
 
