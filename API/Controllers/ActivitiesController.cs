@@ -19,9 +19,9 @@ public class ActivitiesController() : BaseApiController
     //async is good coz the db is async
     //keep the return type in the actionResult
     [HttpGet]
-    public async Task<ActionResult<List<Activity>>> GetActivities()
+    public async Task<ActionResult<List<Activity>>> GetActivities(CancellationToken ct)
     {
-        return await Mediator.Send(new GetActivityList.Query());
+        return await Mediator.Send(new GetActivityList.Query(), ct);
     }
 
     //This id will be replaced with whatever is passed in the parameter with the same name
