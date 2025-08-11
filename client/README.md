@@ -146,3 +146,5 @@ Step1: Go to Nuget and download: MediiatR @Jimmy Bogard to our APPLICATION proje
 -Hot reload can let ya down so CTRL+R that API dotnet server
 
 - using Automapper version 13 because it uses the same config and same commercial license as the course
+
+- cancellation token: if user triggers an action where we dont need to wait on a response from the db, we send a cancellation token
