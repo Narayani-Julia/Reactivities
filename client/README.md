@@ -142,3 +142,5 @@ import '@fontsource/roboto/700.css';
 
 Step1: Go to Nuget and download: MediiatR @Jimmy Bogard to our APPLICATION project
 - Used to create handlers in our project
+
+-Hot reload can let ya down so CTRL+R that API dotnet server

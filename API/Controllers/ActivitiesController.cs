@@ -11,7 +11,7 @@ namespace API.Controllers;
 
 //Passing in a variable like this is basically defining the contructor like this
 //Referencing the basic structure of a controller that always has specific properties
-public class ActivitiesController(IMediator mediator) : BaseApiController
+public class ActivitiesController() : BaseApiController
 {
     //HttpEndpoints will be here:
     //async is good coz the db is async
@@ -20,7 +20,7 @@ public class ActivitiesController(IMediator mediator) : BaseApiController
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
         //Without Mediator: return await context.Activities.ToListAsync();
-        return await mediator.Send(new GetActivityList.Query());
+        return await Mediator.Send(new GetActivityList.Query());
     }
 
     //This id will be replaced with whatever is passed in the parameter with the same name
@@ -32,7 +32,7 @@ public class ActivitiesController(IMediator mediator) : BaseApiController
         // if (activity == null) return BadRequest(); //can also return notFound();
         // return activity;
         //With Mediator:
-        return await mediator.Send(new GetActivityDetails.Query { Id = id });
+        return await Mediator.Send(new GetActivityDetails.Query { Id = id });
     }
 }
 
