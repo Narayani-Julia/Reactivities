@@ -67,3 +67,67 @@ export default tseslint.config([
   },
 ])
 ```
+client -> package.json
+dependencies: {
+"react": "^latest version"
+}
+- note: make sure you run npm commands in the client folder and not in the outside of the client folder
+- npm install
+> inside the index.html
+title>Reactivities</title>
+> inside the App.tsx
+--> remove all the html
+<h3>Reactivities</h3>
+--> index.css
+--> remove all of these things
+
+> extension: 
+react: ES7+ React/Redux/React-Native snippets
+ESLint 
+
+> writing in jsx file:
+< style = {{}}>
+
+const [] = useState([]);
+useEffect(()=>{
+	fetch('https://localhost:5001/api/activities').then(
+reponse=> response.json()).then(data=> setActivities(data))
+return ()=> {}
+}, []);
+
+return(<div>
+<h3 className="app" style{{color: red}}>Reactivities</h3>
+<ul>{activities.map((activity)=>(<li>{activity.title}</li>))}</ul>
+</div>)
+
+------------
+
+CORS: Cross origin resource sharing. How resources are accessed securely so that different origins can access them. No access-controll-allow-origin header is present on the requested resource --> 
+> Go to Program.cs to set up the CORS. Now services dont have to have a specific order. After AccDbContext<AppDbContext>() :
+builder.Services.AddCors();
+Middleware is specific about the order though, so it is important to do the right order here. BEFORE MapControllers():
+app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000", "https://localhost:3000"));
+CTRL+R
+
+-Run API: dotnet watch 
+-Run client: npm run dev
+
+- Format: ALT + SHIFT + F
+
+material UI installation via their website>installation:
+npm install @mui/material @emotion/react @emotion/styled
+
+>install the roboto font: 
+add the below to make sure that there is: 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+- install material UI design
+
+-mkcert installation. Check github pages of it
+
+-axious: npm install axious
+-axious has some advantages over fetch(). Check axious features.
+-automatic json handling, 
