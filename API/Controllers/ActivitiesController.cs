@@ -1,5 +1,7 @@
 using System;
+using Application.Activities.Queries;
 using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistance;
@@ -9,7 +11,7 @@ namespace API.Controllers;
 
 //Passing in a variable like this is basically defining the contructor like this
 //Referencing the basic structure of a controller that always has specific properties
-public class ActivitiesController(AppDbContext context) : BaseApiController
+public class ActivitiesController(AppDbContext context, IMediator mediator) : BaseApiController
 {
     //HttpEndpoints will be here:
 
@@ -18,7 +20,8 @@ public class ActivitiesController(AppDbContext context) : BaseApiController
     [HttpGet]
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
-        return await context.Activities.ToListAsync();
+        return await mediator.Send(new GetActivityList.Query());
+        //return await context.Activities.ToListAsync();
     }
 
     //This id will be replaced with whatever is passed in the parameter with the same name

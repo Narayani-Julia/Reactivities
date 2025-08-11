@@ -1,3 +1,5 @@
 API/appsettings.json
 API/reactivities.db
 node_modules
+API/reactivities.db-shm
+API/reactivities.db-wal

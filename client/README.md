@@ -131,3 +131,14 @@ import '@fontsource/roboto/700.css';
 -axious: npm install axious
 -axious has some advantages over fetch(). Check axious features.
 -automatic json handling, 
+
+-Clean Architecture
+- independant from frameworks, inteerface, db
+- testable
+-CQRS: Command query responsibility segregation
+-- commands: that update db in some way
+-- queries: reads data from db
+-- mediator: mediates between different layers in clean acrchitecture
+
+Step1: Go to Nuget and download: MediiatR @Jimmy Bogard to our APPLICATION project
+- Used to create handlers in our project
