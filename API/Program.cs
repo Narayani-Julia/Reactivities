@@ -12,12 +12,21 @@ builder.Services.AddDbContext<AppDbContext>(opt=>{
     //Pretty standard connection string esp when there is one DB connection string
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+//swaggerui
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddCors();
 builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 //Activities>bin>Application.dll is the assemblies
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Configure the HTTP request pipeline.
 // A lot of developers use the word x instead of options, so it becomes conventional
@@ -45,4 +54,5 @@ catch (Exception ex)
     var logger = services.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "An error occured during migration");
 }
+
 app.Run();
