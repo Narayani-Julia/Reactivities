@@ -18,8 +18,9 @@ public class CreateActivity
         {
             // We don't need the async activity for this. AddAsync is only used for a specific case, you can look at AddAsync's documentation for this
             context.Activities.Add(request.Activity);
+            //Only when the next line is executed is it actually saved to the database
             await context.SaveChangesAsync(cancellationToken);
-            return request.Activity.Id;
+            return request.Activity.Id.ToString();
         }
     }
 }

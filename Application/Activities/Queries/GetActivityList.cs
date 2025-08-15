@@ -1,6 +1,7 @@
 using System;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Persistance;
 
@@ -16,8 +17,17 @@ public class GetActivityList
     {
         public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
         {
+            //THis is repository Function
             //pass in the cancellation token here
             return await context.Activities.ToListAsync(cancellationToken);
+            //Find based on primary key, firstOrDefault is checking everyvalue
+            //Method 2:
+            // var stock = context.Activities.Find(id);
+            // if (stock == null)
+            // {
+            //     return NotFound();
+            // }
+            // return Ok(stock);
         }
     }
 }

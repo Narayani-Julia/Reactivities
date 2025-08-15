@@ -1,5 +1,13 @@
-# React + TypeScript + Vite
+## TODO: 
+CRUD operations in a C# Web API application using an SQL database.
+ 
+you will use the Swagger page to do the demo with Get (Get All or Get By ID), Post (Add New), Put (Update) and Delete (Remove) on database. 
+ 
+You will design the table relationships (example: between Students, Teachers, and Courses)
+Design:
+Student - Many to Many - Courses - One to One - Teacher
 
+# React + TypeScript + Vite
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
@@ -148,3 +156,18 @@ Step1: Go to Nuget and download: MediiatR @Jimmy Bogard to our APPLICATION proje
 - using Automapper version 13 because it uses the same config and same commercial license as the course
 
 - cancellation token: if user triggers an action where we dont need to wait on a response from the db, we send a cancellation token
+
+## ----- Many to One ------
+- Class1: public Class2? Class2 {} 
+//Navigation property to help you use the access the model
+public int? StockId{}
+- Class2: public List<Class1> {} = new List<Class1>
+
+-download: microsofts sqlserver database to API.csproj
+- entityframeworkCore.tools to api.csproj
+- entityframeworkcore.design to api.csproj
+
+
+- ctor + enter = gives you constructor
+- in DbContext: keep all the tables you need to store here. public DbSet<ClassNName> ClassName {get; set;}
+
