@@ -12,8 +12,8 @@ using Persistance;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250815052839_testDemoCreate")]
-    partial class testDemoCreate
+    [Migration("20250816204320_TestCreate")]
+    partial class TestCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,7 +78,7 @@ namespace Persistance.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CourseId")
+                    b.Property<string>("CourseName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -99,9 +99,29 @@ namespace Persistance.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("TeacherId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("TeacherId");
+
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("Domain.Registered", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentId", "CourseId");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Registered");
                 });
 
             modelBuilder.Entity("Domain.Student", b =>
@@ -155,7 +175,50 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teacher");
+                    b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("Domain.Course", b =>
+                {
+                    b.HasOne("Domain.Teacher", "AssignedTeacher")
+                        .WithMany("TaughtCourses")
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("AssignedTeacher");
+                });
+
+            modelBuilder.Entity("Domain.Registered", b =>
+                {
+                    b.HasOne("Domain.Course", "RegisteredCourse")
+                        .WithMany("RegisteredStudents")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Student", "CurrentStudent")
+                        .WithMany("RegisteredCourses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CurrentStudent");
+
+                    b.Navigation("RegisteredCourse");
+                });
+
+            modelBuilder.Entity("Domain.Course", b =>
+                {
+                    b.Navigation("RegisteredStudents");
+                });
+
+            modelBuilder.Entity("Domain.Student", b =>
+                {
+                    b.Navigation("RegisteredCourses");
+                });
+
+            modelBuilder.Entity("Domain.Teacher", b =>
+                {
+                    b.Navigation("TaughtCourses");
                 });
 #pragma warning restore 612, 618
         }

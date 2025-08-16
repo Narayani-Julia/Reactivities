@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain;
 
+[Table("Activities")]
 public class Activity
 {
     //by Default Id is gonna be the primary key of an entity framework

@@ -66,6 +66,9 @@ namespace Application.Repositories
 
         public async Task<Student?> GetByStudentNameAsync(string studentName)
         {
+            //String matching 
+            // == is exact string matching 
+            //TODO: research about fuzzy string matching, case of two similar names
             return await context.Students.FirstOrDefaultAsync(s => s.FirstName == studentName);
         }
 

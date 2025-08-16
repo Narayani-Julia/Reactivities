@@ -171,3 +171,5 @@ public int? StockId{}
 - ctor + enter = gives you constructor
 - in DbContext: keep all the tables you need to store here. public DbSet<ClassNName> ClassName {get; set;}
 
+
+> Learn about stored procedures

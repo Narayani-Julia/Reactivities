@@ -16,6 +16,7 @@ namespace Application.Repositories.Interfaces
         Task<Course?> DeleteAsync(int id);
 
         //In order to create the Many-To-Many relationship
+        //TODO: remove the string matching
         Task<Course?> GetByCourseNameAsync(string courseName);
 
     }

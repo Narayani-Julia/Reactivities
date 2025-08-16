@@ -2,50 +2,48 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Courses.Dtos;
+using Domain;
 
 namespace Application.Teachers.Dtos
 {
-    public class TeacherMapper
+    public static class TeacherMapper
     {
-        public static CourseDto ToCourseDto(this Course commentModel)
+        public static TeacherDto ToTeacherDto(this Teacher commentModel)
         {
-            return new CourseDto
+            return new TeacherDto
             {
                 Id = commentModel.Id,
-                CourseName = commentModel.CourseName,
+                FirstName = commentModel.FirstName,
+                LastName = commentModel.LastName,
                 Department = commentModel.Department,
-                RegistrationCap = commentModel.RegistrationCap,
-                Location = commentModel.Location,
-                StartTime = commentModel.StartTime,
-                IsOffline = commentModel.IsOffline
+                OfficeNo = commentModel.OfficeNo,
+                EmailAddress = commentModel.EmailAddress,
+                TaughtCourses = commentModel.TaughtCourses.Select(c=>c.ToCourseDto()).ToList()
             };
         }
 
-        public static Course ToCommentFromCreate(this CreateCommentDto commentModel, int stockId)
+        public static Teacher ToTeacherFromCreate(this CreateTeacherDto commentModel)
         {
-            return new Course
+            return new Teacher
             {
-                Id = commentModel.Id,
-                CourseName = commentModel.CourseName,
+                FirstName = commentModel.FirstName,
+                LastName = commentModel.LastName,
                 Department = commentModel.Department,
-                RegistrationCap = commentModel.RegistrationCap,
-                Location = commentModel.Location,
-                StartTime = commentModel.StartTime,
-                IsOffline = commentModel.IsOffline
+                OfficeNo = commentModel.OfficeNo,
+                EmailAddress = commentModel.EmailAddress,
             };
         }
 
-        public static Course ToCommentFromUpdate(this UpdateCommentRequestDto commentDto, int stockId)
+        public static Teacher ToTeacherFromUpdate(this UpdateTeacherDto commentModel)
         {
-            return new Course
+            return new Teacher
             {
-                Id = commentModel.Id,
-                CourseName = commentModel.CourseName,
+                FirstName = commentModel.FirstName,
+                LastName = commentModel.LastName,
                 Department = commentModel.Department,
-                RegistrationCap = commentModel.RegistrationCap,
-                Location = commentModel.Location,
-                StartTime = commentModel.StartTime,
-                IsOffline = commentModel.IsOffline
+                OfficeNo = commentModel.OfficeNo,
+                EmailAddress = commentModel.EmailAddress,
             };
         }        
     }

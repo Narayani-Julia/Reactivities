@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Courses.Dtos;
 using Application.Repositories.Interfaces;
+using Application.Students.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SQLitePCL;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class CoursesController(ITeacherRepository teacherRepo, ICoursesRepository courseRepo) : BaseApiController
     {
         [HttpGet]
@@ -19,9 +18,9 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var comments = await courseRepo.GetAllAsync();
-            var commentDto = comments.Select(s => s.ToCourseDto());
-            return Ok(commentDto);
+            var courses = await courseRepo.GetAllAsync();
+            var courseDto = courses.Select(s => s.ToCourseDto()).ToList();
+            return Ok(courseDto);
         }
 
         [HttpGet("{id:int}")]
@@ -29,50 +28,35 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var comment = await courseRepo.GetByIdAsync(id);
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            return Ok(comment.ToCourseDto());
+            var course = await courseRepo.GetByIdAsync(id);
+            if (course == null) {
+                return NotFound(); }
+            return Ok(course.ToCourseDto());
         }
 
         [HttpPost]
-        [Route("{stockId:int}")]
-        public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto)
+        [Route("{teacherId:int}")]
+        public async Task<IActionResult> Create([FromRoute] int teacherId, CreateCourseDto courseDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (!await courseRepo.StockExists(stockId))
-            {
-                return BadRequest("Stock does not exist");
-            }
-            var username = User.GetUsername();
-            var appUser = await _userManager.FindByNameAsync(username);
-            var commentModel = commentDto.ToCommentFromCreate(stockId);
-            commentModel.AppUserId = appUser.Id;
-            await _commentRepo.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState); }
+            if (!await teacherRepo.TeacherExists(teacherId)) {
+                return BadRequest("Teacher does not exist"); }
+            var courseModel = courseDto.ToCourseFromCreate(teacherId);
+            await courseRepo.CreateAsync(courseModel);
+            return CreatedAtAction(nameof(GetById), new { id = courseModel.Id }, courseModel.ToCourseDto());
         }
-
+        
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCourseDto updateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
-
-            if (comment == null)
-            {
-                return NotFound("Comment not found");
-            }
-
-            return Ok(comment.ToCommentDto());
+            var course = await courseRepo.UpdateAsync(id, updateDto);
+            if (course == null) {
+                return NotFound("Course not found"); }
+            return Ok(course.ToCourseDto());
         }
 
         [HttpDelete]
@@ -82,14 +66,14 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var commentModel = await _commentRepo.DeleteAsync(id);
+            var courseModel = await courseRepo.DeleteAsync(id);
 
-            if (commentModel == null)
+            if (courseModel == null)
             {
-                return NotFound("Comment does not exist");
+                return NotFound("Course does not exist");
             }
 
-            return Ok(commentModel);
+            return Ok(courseModel);
         }
     }
 }

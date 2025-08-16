@@ -14,7 +14,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     public required DbSet<Activity> Activities { get; set; }
     public required DbSet<Student> Students { get; set; }
     public required DbSet<Course> Courses { get; set; }
-    public required DbSet<Teacher> Teacher { get; set; }
+    public required DbSet<Teacher> Teachers { get; set; }
     public required DbSet<Registered> Registerations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

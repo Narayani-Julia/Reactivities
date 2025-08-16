@@ -35,7 +35,7 @@ builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetAct
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
-builder.Services.AddScoped<ICoursesRepository, CourseRepository>();
+builder.Services.AddScoped<ICoursesRepository, CoursesRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 

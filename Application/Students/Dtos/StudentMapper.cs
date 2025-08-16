@@ -18,31 +18,22 @@ namespace Application.Students.Dtos
             };
         }
 
-        public static Course ToCommentFromCreate(this CreateCommentDto commentModel, int stockId)
+        public static Student ToStudentFromCreate(this CreateStudentDto commentModel)
         {
-            return new Course
+            return new Student
             {
-                Id = commentModel.Id,
-                CourseName = commentModel.CourseName,
-                Department = commentModel.Department,
-                RegistrationCap = commentModel.RegistrationCap,
-                Location = commentModel.Location,
-                StartTime = commentModel.StartTime,
-                IsOffline = commentModel.IsOffline
+                LastName = commentModel.LastName,
+                FirstName = commentModel.FirstName,
             };
         }
 
-        public static Course ToCommentFromUpdate(this UpdateCommentRequestDto commentModel, int stockId)
+        public static Student ToStudentFromUpdate(this UpdateStudentDto commentModel)
         {
-            return new Course
+            return new Student
             {
-                Id = commentModel.Id,
-                CourseName = commentModel.CourseName,
-                Department = commentModel.Department,
-                RegistrationCap = commentModel.RegistrationCap,
-                Location = commentModel.Location,
-                StartTime = commentModel.StartTime,
-                IsOffline = commentModel.IsOffline
+                LastName = commentModel.LastName,
+                FirstName = commentModel.FirstName,
             };
-        }    }
+        }
+    }    
 }

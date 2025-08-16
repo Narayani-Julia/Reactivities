@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Repositories.Interfaces;
+using Application.Students.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Persistance;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class StudentsController(IStudentRepository studentRepo, AppDbContext context) : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+        public async Task<IActionResult> GetAll()
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var stocks = await studentRepo.GetAllAsync(query);
-
-            var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
-
-            return Ok(stockDto);
+            var students = await studentRepo.GetAllAsync();
+            var studentDto = students.Select(s => s.ToStudentDto()).ToList();
+            return Ok(studentDto);
         }
 
         [HttpGet("{id:int}")]
@@ -30,45 +26,36 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var stock = await studentRepo.GetByIdAsync(id);
-
-            if (stock == null)
+            var student = await studentRepo.GetByIdAsync(id);
+            if (student == null)
             {
                 return NotFound();
             }
-
-            return Ok(stock.ToStockDto());
+            return Ok(student.ToStudentDto());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
+        public async Task<IActionResult> Create([FromBody] CreateStudentDto studentDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var stockModel = stockDto.ToStockFromCreateDTO();
-
-            await studentRepo.CreateAsync(stockModel);
-
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
+            var studentModel = studentDto.ToStudentFromCreate();
+            await studentRepo.CreateAsync(studentModel);
+            return CreatedAtAction(nameof(GetById), new { id = studentModel.Id }, studentModel.ToStudentDto());
         }
-
+        
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockRequestDto updateDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStudentDto updateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var stockModel = await studentRepo.UpdateAsync(id, updateDto);
-
-            if (stockModel == null)
+            var studentModel = await studentRepo.UpdateAsync(id, updateDto);
+            if (studentModel == null)
             {
-                return NotFound();
+                return NotFound("Student Not Found");
             }
-
-            return Ok(stockModel.ToStockDto());
+            return Ok(studentModel.ToStudentDto());
         }
 
         [HttpDelete]
@@ -78,14 +65,14 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var stockModel = await studentRepo.DeleteAsync(id);
+            var studentModel = await studentRepo.DeleteAsync(id);
 
-            if (stockModel == null)
+            if (studentModel == null)
             {
                 return NotFound();
             }
-
-            return NoContent();
+            
+            return Ok(studentModel);
         }
     }
 }

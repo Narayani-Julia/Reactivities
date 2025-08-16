@@ -11,25 +11,30 @@ namespace API.Controllers
     public class RegisteredController(ICoursesRepository courseRepo, IStudentRepository studentRepo, IRegistrationRepository registeredRepo) : BaseApiController
     {
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetAllCoursesForStudent([FromRoute] int id)
+        public async Task<IActionResult> GetAllCoursesForStudent([FromRoute] int id, string type)
         {
-            var student = await studentRepo.GetByIdAsync(id); 
-            var userPortfolio = await registeredRepo.GetRegisteredCoursesFromStudent(student);
-            return Ok(userPortfolio);
+            if (type.ToLower() == "student")
+            {
+                var student = await studentRepo.GetByIdAsync(id);
+                var registeredPortfolio = await registeredRepo.GetRegisteredCoursesFromStudent(student);
+                return Ok(registeredPortfolio);
+            }
+            if (type.ToLower() == "course")
+            {
+                var course = await courseRepo.GetByIdAsync(id);
+                var registeredPortfolio = await registeredRepo.GetRegisteredStudentFromCourse(course);
+                return Ok(registeredPortfolio);
+            }
+            else
+            {
+                return BadRequest("type can only be Student or Course to specify what id is being sent");
+            }
         }
-
-        // Matching http get requests
-        // [HttpGet("{id:int}")]
-        // public async Task<IActionResult> GetAllStudentsForCourse([FromRoute] int id)
-        // {
-        //     var course = await courseRepo.GetByIdAsync(id); 
-        //     var userPortfolio = await registeredRepo.GetRegisteredStudentFromCourse(course);
-        //     return Ok(userPortfolio);
-        // }
 
         [HttpPost]
         public async Task<IActionResult> AddPortfolio(int studentId, string courseName)
         {
+            //
             var course = await courseRepo.GetByCourseNameAsync(courseName);
             var student = await studentRepo.GetByIdAsync(studentId);
 
@@ -40,15 +45,15 @@ namespace API.Controllers
 
             if (newRegistratoin.Any(e => e.CourseName.ToLower() == courseName.ToLower())) return BadRequest("Cannot add same student to class");
 
-            var portfolioModel = new Registered
+            var registeredModel = new Registered
             {
                 StudentId = student.Id,
                 CourseId = course.Id
             };
 
-            await registeredRepo.CreateAsync(portfolioModel);
+            await registeredRepo.CreateAsync(registeredModel);
 
-            if (portfolioModel == null)
+            if (registeredModel == null)
             {
                 return StatusCode(500, "Could not create");
             }
@@ -59,7 +64,7 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        [Route("{id:int}")]
+        [Route("{studentId:int}")]
         
         public async Task<IActionResult> DeleteRegistration(int studentId, [FromQuery] string courseName)
         {
@@ -68,15 +73,15 @@ namespace API.Controllers
             else
             {
                 var userPortfolio = await registeredRepo.GetRegisteredCoursesFromStudent(student);
-                var filteredStock = userPortfolio.Where(s => s.CourseName.ToLower() == courseName.ToLower()).ToList();
+                var filteredRegistration = userPortfolio.Where(s => s.CourseName.ToLower() == courseName.ToLower()).ToList();
 
-                if (filteredStock.Count() == 1)
+                if (filteredRegistration.Count() == 1)
                 {
                     await registeredRepo.DeletePortfolio(student, courseName);
                 }
                 else
                 {
-                    return BadRequest("Stock not in your portfolio");
+                    return BadRequest("Student not registered in that course");
                 }
                 return Ok();
             }
